@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Exercise</title>
+	<meta charset="utf-8">
+	<style type="text/css" href="" >
+		* { margin: 0; padding: 0; }
+		.clear { clear: both; }
+		.form { display: block; width: 400px; padding: 20px 1px; border: solid 1px #ddd; }
+		.form button { margin-top: 10px; }
+		.hide { display: none; }
+		.show { display: block; }
+		.left { float: left; }
+		.right { float: right; }
+		body a { margin: 0px 50px; }
+		#page_navigation a:hover{background:#ccc;}
+		.active_page{
+   	 		background:#555;
+   	 		color:red !important;
+		}
+	</style>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			console.log("Start!");
+			// show add form
+			$('#btnShowAdd').on("click", function() {
+				$('#add_form').removeClass('hide');
+				$('#search_form').addClass('hide');
+				$('#id').focus();
+			});
+			// hide add form
+			$('#btnCancel').on('click', function() {
+				$('#add_form').addClass('hide');
+			});
+			// show search form
+			$('#btnShowSearch').on('click', function() {
+				$('#add_form').addClass('hide');
+				$('#search_form').removeClass('hide');
+			});
+			// hide search form
+			$('#btnExit').on('click', function() {
+				$('#search_form').addClass('hide');
+			});
+			// Add value in table
+			$('#btnSave').on("click", function() {
+				var row = "<tr>";
+				$("#add_form input").each(function(idx) {
+					row += '<td class="item-'+  (idx+1) +'">' + $(this).val() + '</td>';
+					$(this).val('');
+				});
+					row += "</tr>";
+					$("#tblResult tbody").append(row);
+					$('#id').focus();
+			});
+			$('#btnSearch').on('click', function() {
+				var key = $('#search_name').val();
+				$('#tblResult tbody tr').each(function() {
+					var name = $(this).find('.item-2').text();
+					if(name.indexOf(key) >= 0) {
+						$(this).removeClass('hide');
+					}
+					else
+					{
+						$(this).addClass('hide');
+					}
+				});
+			});
+			// Phan
+			var pager = new Pager('tblResult',3);
+			pager.init();
+			pager.showPageNav('pager','pageNavPositon');
+			pager.showPage(1);
+		});
+	</script>
+</head>
+<body>
+<a href="#" id="btnShowAdd" >Add New</a>
+<a href="#" id="btnShowSearch" >Search</a>
+<div id="add_form" class="form hide">
+		STT: <input type="text" name="id" id="id" value=""><br>
+		Ten San Pham: <input type="text" name="name" id="name" value=""><br>
+		Gia San Pham: <input type="number" name="cost" id="cost" value=""><br>
+		Loai: <input type="text" name="kind" id="kind" value=""><br>
+		So luong: <input type="text" name="quantity" id="quantity"><br>
+		<button id="btnSave">Save</button>
+		<button id="btnCancel">Cancel</button>
+</div>
+<div id="search_form" class="form hide">
+	<h2>Tim Kiem Theo Ten San Pham</h2>
+	Nhap Ten San Pham: <input type="text" name="search_name" id="search_name">
+	<button id="btnSearch">Search</button>
+	<button id="btnExit">Exit</button>
+</div>
+<table id="tblResult" border="1" cellspacing="5">
+	<thead>
+		<tr>
+			<td>STT</td>
+			<td>Ten San Pham</td>
+			<td>Gia San Pham</td>
+			<td>Loai</td>
+			<td>So Luong</td>
+		</tr>
+	</thead>
+	<tbody>
+	</tbody>
+</table>
+<div id="page_navigation"></div>
+
+</body>
+</html>
